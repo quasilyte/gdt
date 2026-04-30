@@ -10,10 +10,15 @@ import (
 // It has a very comparable get/set performance as an array too.
 // It uses more memory though.
 //
+// It doesn't grow, ever. It's preallocated for the given size which never change.
+// The memory used is approx n*sizeof(T) + n*sizeof(uint32).
+//
 // When to use: instead of an array with relatively large size (e.g. 300+ elems)
 // that needs to be re-used with a very cheap Reset().
 // For example, if an array of size N is only ever accessed for a few reads and writes,
 // so the Reset time might dominate, this GenMap can be considered.
+// In other words, it's good for sparse sets you would otherwise try to implement
+// as an array.
 type GenMap[T any] struct {
 	elems []genMapElem[T]
 	gen   uint32
@@ -63,6 +68,11 @@ func (m *GenMap[T]) Set(k uint, v T) {
 	if k < uint(len(m.elems)) {
 		m.elems[k] = genMapElem[T]{value: v, gen: m.gen}
 	}
+}
+
+// Len returns the static size assigned during the m construction.
+func (m *GenMap[T]) Len() int {
+	return len(m.elems)
 }
 
 // Reset clears the underlying array and it's O(1).
