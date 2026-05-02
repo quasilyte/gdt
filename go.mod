@@ -1,5 +1,3 @@
 module github.com/quasilyte/gdt
 
-go 1.24.0
-
-require golang.org/x/exp v0.0.0-20260410095643-746e56fc9e2f // indirect
+go 1.23.0

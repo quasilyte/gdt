@@ -1,10 +1,6 @@
 package gdt
 
-import (
-	"golang.org/x/exp/constraints"
-)
-
-type IDSeq[T constraints.Integer] struct {
+type IDSeq[T integer] struct {
 	Current T
 }
 
