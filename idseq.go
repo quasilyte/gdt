@@ -5,11 +5,14 @@ type IDSeq[T integer] struct {
 }
 
 func (g *IDSeq[T]) Next() T {
+	return g.NextOr(1)
+}
+
+func (g *IDSeq[T]) NextOr(firstValue T) T {
 	old := g.Current
 	g.Current++
 	if g.Current < old {
-		// Overflow happened, should start with 1.
-		g.Current = 1
+		g.Current = firstValue
 	}
 	id := g.Current
 	return id
